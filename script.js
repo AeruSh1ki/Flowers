@@ -30,7 +30,7 @@ function flowerMarkup(flower) {
 }
 
 function targetFlowerCount(width, height) {
-  return Math.min(64, Math.max(38, Math.round(width * height / 14500)));
+  return Math.min(160, Math.max(64, Math.round(width * height / 9000)));
 }
 
 function createFlowerNode() {
@@ -57,8 +57,11 @@ function layoutFlower(node, index, count, width, height) {
   const size = (mobile ? 86 : 128) + node.sizeFactor * (mobile ? 56 : 96);
   const reachX = width / 2 + size * 0.42;
   const reachY = height / 2 + size * 0.42;
-  const x = Math.cos(angle) * radius * reachX;
-  const y = Math.sin(angle) * radius * reachY;
+  const unitX = Math.cos(angle);
+  const unitY = Math.sin(angle);
+  const squareEdge = Math.max(Math.abs(unitX), Math.abs(unitY));
+  const x = unitX / squareEdge * radius * reachX;
+  const y = unitY / squareEdge * radius * reachY;
   const x1 = x * 0.14;
   const y1 = y * 0.14;
   const x2 = x * 0.4;

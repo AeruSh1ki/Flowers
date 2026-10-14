@@ -54,6 +54,7 @@ button { font: inherit; }
 @keyframes float { 0%,100% { margin-top: 0; } 50% { margin-top: var(--lift); } }
 .bloom-title { position: absolute; z-index: 3; left: 50%; top: 50%; transform: translate(-50%,-50%) translateY(12px); opacity: 0; font: italic clamp(24px,4vw,45px) 'Playfair Display', serif; color: #76595b; text-align: center; width: 90%; text-shadow: 0 1px 18px #fff9; pointer-events: none; transition: opacity 1.2s, transform 1.2s; }
 .opening.bloom-complete .bloom-title { opacity: 1; transform: translate(-50%,-50%) translateY(-28vh); }
+.opening.bloom-complete .garden .flower { filter:blur(3.5px) drop-shadow(0 7px 9px #493b3710); }
 .bouquet { position: absolute; z-index: 3; left: 50%; top: 50%; width: min(52vw, 390px); height: min(76svh, 700px); transform: translate(-50%,-46%) scale(.82); opacity: 0; visibility: hidden; pointer-events: none; filter: drop-shadow(0 20px 24px #765c4a24); }
 .bouquet img { display:block; width:100%; height:100%; object-fit:contain; }
 .opening.bouquet-revealed .bouquet { visibility: visible; opacity: 1; animation: bouquet-arrive 1.4s cubic-bezier(.2,.75,.2,1) both, bouquet-sway 6s 1.4s ease-in-out infinite; }
@@ -78,6 +79,9 @@ button { font: inherit; }
 .letter-kicker { margin:0 0 8px; color:#a96e77; font:500 clamp(17px,2.4vw,21px)/1.2 'Dancing Script', cursive; }
 h1 { margin:0; font:600 clamp(38px,7.5vw,52px)/1.1 'Dancing Script', cursive; letter-spacing:0; color:#85545f; }
 h1 em { font-weight:600; color:#bd7182; }
+.letter-emoji { display:inline-block; font-family:system-ui,sans-serif; font-size:.68em; vertical-align:.08em; opacity:0; transform:translateY(8px) scale(.45) rotate(-18deg); }
+.letter-section.is-unlocked .letter-emoji { animation:letter-emoji-pop .7s .55s cubic-bezier(.2,.85,.25,1.25) both; }
+@keyframes letter-emoji-pop { 65% { opacity:1; transform:translateY(-3px) scale(1.12) rotate(8deg); } 100% { opacity:1; transform:translateY(0) scale(1) rotate(0); } }
 .divider { margin:12px 0 14px; display:flex; align-items:center; gap:13px; color:#bb7781; font:600 20px/1 'Dancing Script', cursive; }
 .divider::before, .divider::after { content: ''; height: 1px; flex: 1; background: #eaded8; }
 .letter-copy { max-width:390px; margin:auto; color:#72585d; font:500 clamp(16px,2vw,19px)/1.45 'Dancing Script', cursive; }
