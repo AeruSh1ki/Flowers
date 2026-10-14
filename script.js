@@ -10,6 +10,8 @@ let started = false;
 const flowerNodes = [];
 let resizeFrame = 0;
 let bloomStartedAt = 0;
+const BLOOM_SPREAD_MS = 3150;
+const BLOOM_DURATION_MS = 3200;
 const GOLDEN_RATIO = (1 + Math.sqrt(5)) / 2;
 const GOLDEN_ANGLE = (2 * Math.PI) / (GOLDEN_RATIO * GOLDEN_RATIO);
 
@@ -41,8 +43,8 @@ function createFlowerNode() {
     sizeFactor: Math.random(),
   };
 
-  element.style.setProperty('--delay', `${0.08 + Math.random() * 0.22}s`);
-  element.style.setProperty('--rot', `${Math.random() * 70 - 35}deg`);
+  element.style.setProperty('--delay', '0s');
+  element.style.setProperty('--rot', `${Math.random() * 32 - 16}deg`);
   element.style.setProperty('--lift', `${(8 + Math.random() * 22) * (Math.random() < 0.5 ? -1 : 1)}px`);
   return node;
 }
@@ -55,19 +57,14 @@ function layoutFlower(node, index, count, width, height) {
   const size = (mobile ? 86 : 128) + node.sizeFactor * (mobile ? 56 : 96);
   const reachX = width / 2 + size * 0.42;
   const reachY = height / 2 + size * 0.42;
-  const pointOnSpiral = (fraction) => {
-    const spiralAngle = angle - (1 - fraction) * Math.PI * 4;
-    const spiralRadius = radius * fraction;
-    return [
-      Math.cos(spiralAngle) * spiralRadius * reachX,
-      Math.sin(spiralAngle) * spiralRadius * reachY,
-    ];
-  };
-  const [x1, y1] = pointOnSpiral(0.14);
-  const [x2, y2] = pointOnSpiral(0.4);
-  const [x3, y3] = pointOnSpiral(0.72);
   const x = Math.cos(angle) * radius * reachX;
   const y = Math.sin(angle) * radius * reachY;
+  const x1 = x * 0.14;
+  const y1 = y * 0.14;
+  const x2 = x * 0.4;
+  const y2 = y * 0.4;
+  const x3 = x * 0.72;
+  const y3 = y * 0.72;
   const style = node.element.style;
 
   style.setProperty('--size', `${size}px`);
@@ -94,21 +91,15 @@ function resizeGarden() {
 
   if (flowerNodes.length < count) {
     const additions = document.createDocumentFragment();
-    const flowersAreFading = opening.classList.contains('blooms-fading')
-      || opening.classList.contains('bloom-complete');
 
     while (flowerNodes.length < count) {
       const index = flowerNodes.length;
       const progress = (index + 1) / count;
       const radius = Math.sqrt(progress);
-      const bloomDelay = 0.08 + radius * 4.15 + Math.random() * 0.22;
+      const bloomDelay = (50 + radius * BLOOM_SPREAD_MS) / 1000;
       const elapsed = (performance.now() - bloomStartedAt) / 1000;
       const node = createFlowerNode();
       node.element.style.setProperty('--delay', `${Math.max(0, bloomDelay - elapsed)}s`);
-      if (flowersAreFading) {
-        node.element.style.animation = 'none';
-        node.element.style.opacity = '0';
-      }
       flowerNodes.push(node);
       additions.append(node.element);
     }
@@ -142,7 +133,7 @@ function bloomGarden() {
   for (let i = 0; i < count; i++) {
     const progress = (i + 1) / count;
     const radius = Math.sqrt(progress);
-    const delay = 0.08 + radius * 4.15 + Math.random() * 0.22;
+    const delay = (50 + radius * BLOOM_SPREAD_MS) / 1000;
     const node = createFlowerNode();
     const element = node.element;
     element.style.setProperty('--delay', `${delay}s`);
@@ -153,15 +144,9 @@ function bloomGarden() {
   garden.replaceChildren(fragment);
 
   window.setTimeout(() => {
-    opening.classList.add('bloom-filled');
-    window.setTimeout(() => {
-      opening.classList.add('blooms-fading');
-      window.setTimeout(() => {
-        opening.classList.add('bloom-complete');
-        showBouquet.focus({ preventScroll: true });
-      }, 2200);
-    }, 3000);
-  }, 7200);
+    opening.classList.add('bloom-complete');
+    showBouquet.focus({ preventScroll: true });
+  }, BLOOM_SPREAD_MS + BLOOM_DURATION_MS + 350);
 }
 
 envelope.addEventListener('click', bloomGarden);
