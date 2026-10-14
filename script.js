@@ -6,6 +6,7 @@ const bouquet = document.querySelector('#bouquet');
 const showBouquet = document.querySelector('#showBouquet');
 const readLetter = document.querySelector('#readLetter');
 const letterSection = document.querySelector('#letter');
+const emojiFloatField = document.querySelector('#emojiFloatField');
 let started = false;
 const flowerNodes = [];
 let resizeFrame = 0;
@@ -169,6 +170,29 @@ showBouquet.addEventListener('click', () => {
 });
 
 readLetter.addEventListener('click', () => {
+  if (!emojiFloatField.childElementCount) {
+    const emojis = document.createDocumentFragment();
+    const count = 28;
+
+    for (let index = 0; index < count; index++) {
+      const emoji = document.createElement('span');
+      const duration = 6 + Math.random() * 3.5;
+      emoji.className = 'emoji-float';
+      emoji.textContent = '😝';
+      emoji.setAttribute('aria-hidden', 'true');
+      emoji.style.setProperty('--x', `${3 + Math.random() * 94}%`);
+      emoji.style.setProperty('--size', `${24 + Math.random() * 22}px`);
+      emoji.style.setProperty('--duration', `${duration}s`);
+      emoji.style.setProperty('--delay', `${-Math.random() * duration}s`);
+      emoji.style.setProperty('--drift', `${Math.random() * 18 - 9}vw`);
+      emoji.style.setProperty('--tilt', `${Math.random() * 44 - 22}deg`);
+      emoji.style.setProperty('--scale', `${0.78 + Math.random() * 0.46}`);
+      emojis.append(emoji);
+    }
+
+    emojiFloatField.append(emojis);
+  }
+
   letterSection.classList.add('is-unlocked');
   letterSection.setAttribute('aria-hidden', 'false');
   letterSection.scrollIntoView({ behavior: 'smooth', block: 'start' });

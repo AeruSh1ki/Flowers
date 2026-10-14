@@ -79,9 +79,11 @@ button { font: inherit; }
 .letter-kicker { margin:0 0 8px; color:#a96e77; font:500 clamp(17px,2.4vw,21px)/1.2 'Dancing Script', cursive; }
 h1 { margin:0; font:600 clamp(38px,7.5vw,52px)/1.1 'Dancing Script', cursive; letter-spacing:0; color:#85545f; }
 h1 em { font-weight:600; color:#bd7182; }
-.letter-emoji { position:fixed; z-index:8; left:18%; bottom:-2.5rem; display:block; width:1em; font-family:system-ui,sans-serif; font-size:.68em; text-align:center; opacity:0; pointer-events:none; }
-.letter-section.is-unlocked .letter-emoji { animation:letter-emoji-float 7s .55s linear infinite; }
-@keyframes letter-emoji-float { 0% { left:18%; bottom:-2.5rem; opacity:0; transform:translateX(-50%) rotate(-18deg) scale(.78); } 12% { opacity:1; } 44% { left:76%; transform:translateX(-50%) rotate(12deg) scale(1); } 70% { left:35%; transform:translateX(-50%) rotate(-10deg) scale(1.08); } 100% { left:66%; bottom:108vh; opacity:0; transform:translateX(-50%) rotate(18deg) scale(.88); } }
+.emoji-float-field { position:fixed; z-index:8; inset:0; overflow:hidden; visibility:hidden; opacity:0; pointer-events:none; transition:opacity .35s ease,visibility .35s; }
+.letter-section.is-unlocked .emoji-float-field { visibility:visible; opacity:1; }
+.emoji-float { position:absolute; left:var(--x); bottom:-12vh; font-family:system-ui,sans-serif; font-size:var(--size); line-height:1; opacity:0; filter:drop-shadow(0 3px 5px #684c5038); animation:emoji-rise var(--duration) var(--delay) linear infinite; animation-play-state:paused; }
+.letter-section.is-unlocked .emoji-float { animation-play-state:running; }
+@keyframes emoji-rise { 0% { bottom:-12vh; opacity:0; transform:translateX(0) rotate(var(--tilt)) scale(var(--scale)); } 8%,92% { opacity:.86; } 100% { bottom:112vh; opacity:0; transform:translateX(var(--drift)) rotate(var(--tilt)) scale(var(--scale)); } }
 .divider { margin:12px 0 14px; display:flex; align-items:center; gap:13px; color:#bb7781; font:600 20px/1 'Dancing Script', cursive; }
 .divider::before, .divider::after { content: ''; height: 1px; flex: 1; background: #eaded8; }
 .letter-copy { max-width:390px; margin:auto; color:#72585d; font:500 clamp(16px,2vw,19px)/1.45 'Dancing Script', cursive; }
@@ -89,4 +91,4 @@ h1 em { font-weight:600; color:#bd7182; }
 .letter-copy .letter-signoff { margin:12px 0 0; color:#9d5f6c; font-weight:700; }
 .footer-note { margin: 22px 0 0; color: #a68d84; font-size: 9px; letter-spacing: .15em; }
 @media (max-width: 560px) { .opening::before { width: 75vw; height: 75vw; } .opening::after { width: 100vw; height: 100vw; } .bouquet { width: min(90vw, 430px); height: min(72svh, 820px); top: 49%; } .opening.bloom-complete .bloom-title, .opening.bouquet-revealed .bloom-title { transform:translate(-50%,-50%) translateY(clamp(-440px,-25vh,-350px)); } .letter-section.is-unlocked { padding:32px 14px 24px; } .letter-card { width:min(100%, 50svh); box-shadow:0 12px 40px #735f4c18; } .letter-content { width:70%; } .letter-kicker { margin-bottom:5px; } .divider { margin:8px 0 10px; } .letter-copy { font-size:clamp(15px,4vw,18px); line-height:1.38; } .letter-copy p { margin-bottom:7px; } .letter-copy .letter-signoff { margin-top:9px; } }
-@media (prefers-reduced-motion: reduce) { *,*::before,*::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } .letter-section.is-unlocked .letter-emoji { position:static; display:inline-block; opacity:1; transform:none; } }
+@media (prefers-reduced-motion: reduce) { *,*::before,*::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } .emoji-float-field { display:none; } }
