@@ -1,0 +1,15 @@
+.git
+.github
+.codex
+node_modules
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+.env
+.env.*
+!.env.example
+*.log
+Thumbs.db
+desktop.ini
+assets/*-cutout.png
+assets/*.jpg
